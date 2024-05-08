@@ -23,6 +23,25 @@ function showList (array $items): void
         echo 'Ваш список покупок пуст.' . PHP_EOL;
     }
 };
+
+function selectAction(array $operations): int
+{
+    global $items;
+
+    showList($items);
+
+    echo 'Выберите операцию для выполнения: ' . PHP_EOL;
+    echo implode(PHP_EOL, $operations) . PHP_EOL . '> ';
+    $operationNumber = (int)trim(fgets(STDIN));
+
+    if (!array_key_exists($operationNumber, $operations)) {
+        system('cls');
+        echo 'Неизвестный номер операции, повторите попытку.' . PHP_EOL;
+        return selectAction($operations);
+    }    
+    return $operationNumber;
+}
+
 function addItemToList (array &$items): void 
 {
     echo "Введение название товара для добавления в список: \n> ";
@@ -57,23 +76,25 @@ function viewList (array $items): void
 };
 
 do {
-    system('cls'); // windows
+    system('cls');
 
-    do {
-        showList($items);  
+    // do {
+    //     showList($items);  
 
-        echo 'Выберите операцию для выполнения: ' . PHP_EOL;
-        // Проверить, есть ли товары в списке? Если нет, то не отображать пункт про удаление товаров
-        echo implode(PHP_EOL, $operations) . PHP_EOL . '> ';
-        $operationNumber = trim(fgets(STDIN));
+    //     echo 'Выберите операцию для выполнения: ' . PHP_EOL;
+    //     // Проверить, есть ли товары в списке? Если нет, то не отображать пункт про удаление товаров
+    //     echo implode(PHP_EOL, $operations) . PHP_EOL . '> ';
+    //     $operationNumber = trim(fgets(STDIN));
 
-        if (!array_key_exists($operationNumber, $operations)) {
-            system('cls');
+    //     if (!array_key_exists($operationNumber, $operations)) {
+    //         system('cls');
 
-            echo '!!! Неизвестный номер операции, повторите попытку.' . PHP_EOL;
-        }
+    //         echo '!!! Неизвестный номер операции, повторите попытку.' . PHP_EOL;
+    //     }
 
-    } while (!array_key_exists($operationNumber, $operations));
+    // } while (!array_key_exists($operationNumber, $operations));
+    
+    $operationNumber = selectAction($operations);
 
     echo 'Выбрана операция: '  . $operations[$operationNumber] . PHP_EOL;
 
